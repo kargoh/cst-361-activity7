@@ -13,6 +13,7 @@ import exception.TracksNotFoundException;
 
 @Stateless
 @Local(MusicManagerInterface.class)
+@Local(Cache.class)
 @LocalBean
 public class MusicManager implements MusicManagerInterface {
 	HashMap<String, List<Track>> trackInfo;
@@ -39,6 +40,8 @@ public class MusicManager implements MusicManagerInterface {
 		tracks1.add(new Track("Re-Entry", 13));
 		trackInfo.put("A Day To Remember - You're Welcom - 2021", tracks1);
 	}
+	
+	
 
 	@Override
 	public Album addAlbum(Album album) {
@@ -59,6 +62,7 @@ public class MusicManager implements MusicManagerInterface {
 		return album;
 	}
 
+	
 	private List<Track> getTracks(Album album) {
 		String key = album.getArtist() + " - " + album.getTitle() + " - " + album.getYear();
 		if (trackInfo.containsKey(key)) {
@@ -66,5 +70,8 @@ public class MusicManager implements MusicManagerInterface {
 		} else {
 			return new ArrayList<Track>();
 		}
+		
+		Cache cache = new Cache();
+		cache.getObject(album);
 	}
 }
